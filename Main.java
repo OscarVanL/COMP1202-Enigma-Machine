@@ -23,7 +23,7 @@ public class Main {
 		reflector.initialise("I");
 		enigma.addReflector(reflector);
 		
-		String encodedMessage = "GF";
+		String encodedMessage = "GFWIQH";
 		char[] encodedMessageChars = encodedMessage.toLowerCase().toCharArray();
 		
 		for (int i=0; i<encodedMessage.length(); i++) {

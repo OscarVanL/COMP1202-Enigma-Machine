@@ -45,16 +45,19 @@ public class BasicRotor extends Rotor {
 			//If there is a rotor shift, first this is subtracted from the input letter.
 			//Then if this results in a negative letter (below 'a'), 26 is added so it 'loops' back to 'z'
 			letter = (letterIn - position);
+			System.out.println("		position substitution: " + letter);
 			if (letter < 0) {
 				letter = (letter + 26);
 			}
 			//Then the mapping is used to find the encoded letter
 			letter = mapping[letter];
+			System.out.println("		after mapping: " + letter);
 			//Then the rotor shift is added back to this encoded letter
 			letter += position;
+			System.out.println("		position addition: " + letter);
 			//If this encoded letter is above 'z', 25 is subtracted so it 'loops' back to 'a'
 			if (letter > 25) {
-				letter = (letter - 25);
+				letter = (letter - 26);
 			}
 			return letter;
 		}
@@ -69,16 +72,19 @@ public class BasicRotor extends Rotor {
 			//Then if this results in a negative letter (below 'a'), 26 is added so it 'loops' back to 'z'
 			int letter;
 			letter = (letterIn - position);
+			System.out.println("		position substitution: " + letter);
 			if (letter < 0) {
 				letter = (letter + 26);
 			}
 			//Then the inverse mapping is used to find the encoded letter
 			letter = inverse[letter];
+			System.out.println("		after mapping inverse: " + letter);
 			//Then the rotor shift is added back to this encoded letter
 			letter += position;
+			System.out.println("		position addition: " + letter);
 			//If this encoded letter is above 'z', 25 is subtracted so it 'loops' back to 'a'
 			if (letter > 25) {
-				letter = (letter - 25);
+				letter = (letter - 26);
 			}
 			return letter;
 		}

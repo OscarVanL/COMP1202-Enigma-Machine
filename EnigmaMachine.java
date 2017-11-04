@@ -93,32 +93,43 @@ public class EnigmaMachine {
 		 }
 		
 		//Applies rotor substitutions for rotor 1, 2, then 3
+		System.out.println("	==Rotor 1==");
 		letter = rotor1.substitute(letter);
 		System.out.println("	After rotor 1: " + letter);
+		System.out.println("	==Rotor 2==");
 		letter = rotor2.substitute(letter);
 		System.out.println("	After rotor 2: " + letter);
+		System.out.println("	==Rotor 3==");
 		letter = rotor3.substitute(letter);
 		System.out.println("	After rotor 3: " + letter);
 		//Applies the reflector substitution
+		System.out.println("	==Reflector==");
 		letter = reflector.substitute(letter);
 		System.out.println("	After reflector: " + letter);
 		//Applies the rotor inverse substitutions for rotor 3, 2, 1
+		System.out.println("	==Rotor 3 Substitute==");
 		letter = rotor3.substituteBack(letter);
 		System.out.println("	After rotor 3 substitute back: " + letter);
+		System.out.println("	==Rotor 2 Substitute==");
 		letter = rotor2.substituteBack(letter);
 		System.out.println("	After rotor 2 substitute back: " + letter);
+		System.out.println("	==Rotor 1 Substitute==");
 		letter = rotor1.substituteBack(letter);
 		System.out.println("	After rotor 1 substitute back: " + letter);
 		
+		//Runs plugs on output from rotors if applicable.
 		for (Plug plug : plugboard.plugList) {
-			if (plug.getEnd1() == letter) {
-				letter = plug.getEnd2();
-			} else if (plug.getEnd2() == letter) {
-				letter = plug.getEnd1();
+			if ((plug.getEnd1()-'a') == letter) {
+				letter = plug.getEnd2() - 'a';
+				System.out.println("Plug exists, letter changed to: " + (char)(letter) + "(" + letter + ")" );
+			} else if ((plug.getEnd2()-'a') == letter) {
+				letter = plug.getEnd1() - 'a';
+				System.out.println("Plug exists, letter changed to: " + (char)(letter) + "(" + letter + ")");
+				
 			}
 		}
 		
-		System.out.println("===Encoded letter: " + (char)(letter + 'a' - 1) + "===");
+		System.out.println("===Encoded letter: " + (char)(letter + 'a') + "===");
 		
 		rotor1.rotate();		
 	}
