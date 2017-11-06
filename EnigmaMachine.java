@@ -73,8 +73,8 @@ public class EnigmaMachine {
 		}
 	}
 	
-	void encodeLetter(char input) {
-		int letter = -1;
+	int encodeLetter(char input) {
+		int letter = input;
 		
 		//If there exists a plug in plugboard for that letter, switch it
 		for (Plug plug : plugboard.plugList) {
@@ -86,11 +86,7 @@ public class EnigmaMachine {
 				System.out.println("Plug exists, letter changed to: " + (char)(letter) + "(" + (letter-'a') + ")");
 			}
 		}
-		 if (letter == -1) {
-			 letter = input - 'a';
-		 } else {
-			 letter = letter - 'a';
-		 }
+		letter = letter - 'a'; //Converts from ASCII char to a 0-25 integer representation
 		
 		//Applies rotor substitutions for rotor 1, 2, then 3
 		System.out.println("	==Rotor 1==");
@@ -130,7 +126,7 @@ public class EnigmaMachine {
 		}
 		
 		System.out.println("===Encoded letter: " + (char)(letter + 'a') + "===");
-		
-		rotor1.rotate();		
+		rotor1.rotate();
+		return letter;
 	}
 }
