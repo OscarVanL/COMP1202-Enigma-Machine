@@ -1,6 +1,9 @@
+import java.util.ArrayList;
+import java.util.List;
 
 public class EnigmaMachine {
 	
+	private List<String> outputPhrase;
 	private Plugboard plugboard;
 	private BasicRotor rotor1;
 	private BasicRotor rotor2;
@@ -9,6 +12,41 @@ public class EnigmaMachine {
 	
 	EnigmaMachine() {
 		plugboard = new Plugboard();
+		outputPhrase = new ArrayList<String>();
+	}
+	
+	List<String> start(List<String> message) {
+		addPlug('b', 'c');
+		addPlug('r', 'i');
+		addPlug('s', 'm');
+		addPlug('a', 'f');
+		BasicRotor rotor1 = new BasicRotor("IV");
+		rotor1.setPosition(23);
+		BasicRotor rotor2 = new BasicRotor("V");
+		rotor2.setPosition(4);
+		BasicRotor rotor3 = new BasicRotor("II");
+		rotor3.setPosition(9);
+		addRotor(rotor1, 1);
+		addRotor(rotor2, 2);
+		addRotor(rotor3, 3);
+		Reflector reflector = new Reflector();
+		reflector.initialise("II");
+		addReflector(reflector);
+		
+		for (String line : message) {
+			String out = "";
+			String encodedMessage = line;
+			char[] encodedMessageChars = encodedMessage.toLowerCase().toCharArray();
+			
+			for (int i=0; i<encodedMessage.length(); i++) {
+				System.out.println("Processing letter: " + (char)(encodedMessageChars[i]));
+				out += (char)(encodeLetter((encodedMessageChars[i])) + 'a');
+			}
+			outputPhrase.add(out);
+		}
+		
+		System.out.println("Full message: " + outputPhrase);
+		return outputPhrase;
 	}
 	
 	void addPlug (char char1, char char2) {
