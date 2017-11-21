@@ -124,6 +124,7 @@ public class EnigmaMachine {
 				System.out.println("Plug exists, letter changed to: " + (char)(letter) + "(" + (letter-'a') + ")");
 			}
 		}
+		
 		letter = letter - 'a'; //Converts from ASCII char to a 0-25 integer representation
 		
 		//Applies rotor substitutions for rotor 1, 2, then 3
