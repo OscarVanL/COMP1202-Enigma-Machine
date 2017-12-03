@@ -6,19 +6,37 @@ public abstract class Rotor {
 	private int position;
 	protected int[] mapping;
 	
-	abstract void initialise(String type);
+	Rotor() {
+		this("I", 1);
+	}
 	
-	abstract int substitute(int letter); 
+	//This will be used in Reflector (which has no position), hence only type as parameter.
+	Rotor(String type) {
+		this.name = type;
+	}
 	
-	void setPosition(int pos) {
+	Rotor(String type, int position) {
+		this.name = type;
+		this.position = position;
+	}
+	
+	public abstract void initialise(String type);
+	
+	public abstract int substitute(int letter); 
+	
+	public void setPosition(int pos) {
 		this.position = pos;
 	}
 	
-	int getPosition() {
+	public int getPosition() {
 		return this.position;
 	}
 	
-	void incrementPosition() {
+	public void incrementPosition() {
 		this.position++;
+	}
+	
+	public String getType() {
+		return name;
 	}
 }

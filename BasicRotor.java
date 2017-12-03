@@ -5,27 +5,27 @@ public class BasicRotor extends Rotor {
 	protected final int[] IV = {4, 18, 14, 21, 15, 25, 9, 0, 24, 16, 20, 8, 17, 7, 23, 11, 13, 5, 19, 6, 10, 3, 2, 12, 22, 1};
 	protected final int[] V = {21, 25, 1, 17, 6, 8, 19, 24, 20, 15, 18, 3, 13, 7, 11, 23, 0, 22, 12, 9, 16, 14, 5, 4, 2, 10};
 	
-	//Inverse I  [20, 22, 24, 6, 0, 3, 5, 15, 21, 25, 1, 4, 2, 10, 12, 19, 7, 23, 18, 11, 17, 8, 13, 16, 14, 9]
-	//Inverse II [0, 9, 15, 2, 25, 22, 17, 11, 5, 1, 3, 10, 14, 19, 24, 20, 16, 6, 4, 13, 7, 23, 12, 8, 21, 18]
-	//Inverse III[19, 0, 6, 1, 15, 2, 18, 3, 16, 4, 20, 5, 21, 13, 25, 7, 24, 8, 23, 9, 22, 11, 17, 10, 14, 12]
-	//Inverse IV [7, 25, 22, 21, 0, 17, 19, 13, 11, 6, 20, 15, 23, 16, 2, 4, 9, 12, 1, 18, 10, 3, 24, 14, 8, 5]
-	//Inverse V  [16, 2, 24, 11, 23, 22, 4, 13, 5, 19, 25, 14, 18, 12, 21, 9, 20, 3, 10, 6, 8, 0, 17, 15, 7, 1]
-	
 	private int[] inverse = new int[26];
 	
-	BasicRotor(String type) {
-		this.name = type; //Sets name of superclass Rotor.
+	 /**
+	  * Constructor for BasicRotor objects.
+	  * @param type: Type of rotor, I/II/III/IV/V
+	  * @param position: Starting position of rotor, 0-25
+	  */
+	BasicRotor(String type, int position) {
+		super(type, position);
+		this.name = type;
 		initialise(type);
 		generateInverse();
 	}
 	
 	/**
 	 * Rotor substitution method for 'forward' stages of rotors.
-	 * @param An integer representing a letter (0-25) to go through one of the first rotors (1,2 or 3)
+	 * @param letterIn: An integer representing a letter (0-25) to go through one of the first rotors (1,2 or 3)
 	 * @return Letter after passing through rotor, used in next rotor or reflector.
 	 */
 	@Override
-	int substitute(int letterIn) {
+	public int substitute(int letterIn) {
 		//No rotor position shift, so mapping is simple.
 		if (getPosition() == 0) {
 			return mapping[letterIn];
@@ -34,19 +34,16 @@ public class BasicRotor extends Rotor {
 			//If there is a rotor shift, first this is subtracted from the input letter.
 			//Then if this results in a negative letter (below 'a'), 26 is added so it 'loops' back to 'z'
 			letter = (letterIn - getPosition());
-			System.out.println("		position substitution: " + letter);
 			if (letter < 0) {
-				letter = (letter + 26);
+				letter += 26;
 			}
 			//Then the mapping is used to find the encoded letter
 			letter = mapping[letter];
-			System.out.println("		after mapping: " + letter);
 			//Then the rotor shift is added back to this encoded letter
 			letter += getPosition();
-			System.out.println("		position addition: " + letter);
-			//If this encoded letter is above 'z', 25 is subtracted so it 'loops' back to 'a'
+			//If this encoded letter is above 'z', 26 is subtracted so it 'loops' back to 'a'
 			if (letter > 25) {
-				letter = (letter - 26);
+				letter -= 26;
 			}
 			return letter;
 		}
@@ -54,10 +51,10 @@ public class BasicRotor extends Rotor {
 	
 	/**
 	 * Rotor substitution method for 'backwards' stages of rotors.
-	 * @param An integer representing a letter (0-25) to go through a returning rotor (3, 2 or 1)
+	 * @param letterIn: An integer representing a letter (0-25) to go through a returning rotor (3, 2 or 1)
 	 * @return Letter after passing through returning rotor, either used with next rotor or final letter.
 	 */
-	int substituteBack(int letterIn) {
+	public int substituteBack(int letterIn) {
 		//No rotor position shift, so inverse mapping is simple.
 		if (getPosition() == 0) {
 			return inverse[letterIn];
@@ -66,16 +63,13 @@ public class BasicRotor extends Rotor {
 			//Then if this results in a negative letter (below 'a'), 26 is added so it 'loops' back to 'z'
 			int letter;
 			letter = (letterIn - getPosition());
-			System.out.println("		position substitution: " + letter);
 			if (letter < 0) {
-				letter = (letter + 26);
+				letter += 26;
 			}
 			//Then the inverse mapping is used to find the encoded letter
 			letter = inverse[letter];
-			System.out.println("		after mapping inverse: " + letter);
 			//Then the rotor shift is added back to this encoded letter
 			letter += getPosition();
-			System.out.println("		position addition: " + letter);
 			//If this encoded letter is above 'z', 25 is subtracted so it 'loops' back to 'a'
 			if (letter > 25) {
 				letter = (letter - 26);
@@ -87,26 +81,28 @@ public class BasicRotor extends Rotor {
 	/**
 	 * Increments the rotor position, if it is at its maximum position then it is set to zero.
 	 */
-	void rotate() {
-		System.out.println("BasicRotor Basic bitch rotate method");
+	public void rotate() {
 		incrementPosition();
 		if (getPosition() == ROTORSIZE) {
 			setPosition(0);
 		}
-		System.out.println("Rotor advanced, new position: " + getPosition());
 	}
 	
 	/**
-	 * Generates an inverse array from the mapping array.
+	 * Generates an inverse array from the rotor's mapping array.
 	 */
-	void generateInverse() {
+	public void generateInverse() {
 		for (int i : mapping) {
 			inverse[mapping[i]] = i;
 		}
 	}
 
+	/**
+	 * Determines from the rotor type what the mapping should be
+	 * @param type: Type of rotor, passed as a String.
+	 */
 	@Override
-	void initialise(String type) {
+	public void initialise(String type) {
 		switch(type) {
 		case("I"):
 			this.mapping = I;

@@ -15,7 +15,7 @@ public class EnigmaFile {
 		this.enigma = new EnigmaMachine();
 	}
 
-	void start(String filepath) {
+	void start(String filepath) throws Exception {
 		this.inputPath = filepath;
 		try {
 			this.phrase = Files.readAllLines(Paths.get(inputPath));

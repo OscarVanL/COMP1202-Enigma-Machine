@@ -38,6 +38,30 @@ public class Plugboard {
 		return letter;
 	}
 	
+	int getPlugEnd(int plugNumber, int end) throws Exception {
+		switch(end) {
+			case(1):
+				return plugList.get(plugNumber-1).getEnd1();
+			case(2):
+				return plugList.get(plugNumber-1).getEnd2();
+			default:
+				throw new Exception("Error: Invalid plug end given in getPlugEnd. Expected values: 1/2");
+		}
+	}
+	
+	void setPlug(int plugNumber, char letter, int end) throws Exception {
+		switch(end) {
+			case(1):
+				plugList.get(plugNumber-1).setEnd1(letter);
+				break;
+			case(2):
+				plugList.get(plugNumber-1).setEnd2(letter);
+				break;
+			default:
+				throw new Exception("Error: Invalid plug end given in setPlug. Expected values: 1/2, Actual value: " + end);
+		}
+	}
+	
 	int getNumPlugs() {
 		return plugList.size();
 	}
