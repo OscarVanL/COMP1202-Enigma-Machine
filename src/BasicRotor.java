@@ -32,7 +32,7 @@ public class BasicRotor extends Rotor {
 		} else {
 			int letter;
 			//If there is a rotor shift, first this is subtracted from the input letter.
-			//Then if this results in a negative letter (below 'a'), 26 is added so it 'loops' back to 'z'
+			//Then if this results in a negative letter (below 'A'), 26 is added so it 'loops' back to 'Z'
 			letter = (letterIn - getPosition());
 			if (letter < 0) {
 				letter += 26;
@@ -41,7 +41,7 @@ public class BasicRotor extends Rotor {
 			letter = mapping[letter];
 			//Then the rotor shift is added back to this encoded letter
 			letter += getPosition();
-			//If this encoded letter is above 'z', 26 is subtracted so it 'loops' back to 'a'
+			//If this encoded letter is above 'Z', 26 is subtracted so it 'loops' back to 'A'
 			if (letter > 25) {
 				letter -= 26;
 			}
@@ -60,7 +60,7 @@ public class BasicRotor extends Rotor {
 			return inverse[letterIn];
 		} else {
 			//If there is a rotor shift, first this is subtracted from the input letter.
-			//Then if this results in a negative letter (below 'a'), 26 is added so it 'loops' back to 'z'
+			//Then if this results in a negative letter (below 'A'), 26 is added so it 'loops' back to 'Z'
 			int letter;
 			letter = (letterIn - getPosition());
 			if (letter < 0) {
@@ -70,7 +70,7 @@ public class BasicRotor extends Rotor {
 			letter = inverse[letter];
 			//Then the rotor shift is added back to this encoded letter
 			letter += getPosition();
-			//If this encoded letter is above 'z', 25 is subtracted so it 'loops' back to 'a'
+			//If this encoded letter is above 'Z', 25 is subtracted so it 'loops' back to 'A'
 			if (letter > 25) {
 				letter = (letter - 26);
 			}
@@ -84,7 +84,11 @@ public class BasicRotor extends Rotor {
 	public void rotate() {
 		incrementPosition();
 		if (getPosition() == ROTORSIZE) {
-			setPosition(0);
+			try {
+				setPosition(0);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -98,7 +102,7 @@ public class BasicRotor extends Rotor {
 	}
 
 	/**
-	 * Determines from the rotor type what the mapping should be
+	 * Determines from the rotor type (String) what the mapping should be.
 	 * @param type: Type of rotor, passed as a String.
 	 */
 	@Override

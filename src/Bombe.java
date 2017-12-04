@@ -20,15 +20,15 @@ public class Bombe {
 	static void challenge1() throws Exception {
 		EnigmaMachine enigma = new EnigmaMachine();
 		
-		enigma.addPlug('d', 'a');
-		enigma.addPlug('s', 'b');
+		enigma.addPlug('D', 'A');
+		enigma.addPlug('S', 'B');
 		enigma.addRotor(new BasicRotor("IV", 8), 0);
 		enigma.addRotor(new BasicRotor("III", 4), 1);
 		enigma.addRotor(new BasicRotor("II", 21), 2);
 		enigma.addReflector(new Reflector("I")); 
 		
-		String encodedMessage = "JBZAQVEBRPEVPUOBXFLCPJQSYFJI".toLowerCase();
-		String knownWord = "ANSWER".toLowerCase();
+		String encodedMessage = "JBZAQVEBRPEVPUOBXFLCPJQSYFJI";
+		String knownWord = "ANSWER";
 
 		int attemptNumber = 0;
 		String result;
@@ -36,11 +36,11 @@ public class Bombe {
 		//Iterates through all possibilities for plugs.
 		for (int i=0; i<26; i++) {
 			//Change Plug 1's second end
-			enigma.setPlugEnd(1, (char)(i+'a'), 2);
+			enigma.setPlugEnd(0, (char)(i+'A'), 2);
 			
 			for (int j=0; j<26; j++) {
 				//Change Plug 2's second end
-				enigma.setPlugEnd(2, (char)(j+'a'), 2);
+				enigma.setPlugEnd(1, (char)(j+'A'), 2);
 				//Resets plugs to original values before each attempt
 				enigma.setPosition(0, 8);
 				enigma.setPosition(1, 4);
@@ -52,9 +52,11 @@ public class Bombe {
 				if (result.contains(knownWord)) {
 					System.out.println("Attempt: " + attemptNumber);
 					System.out.println("	Output: " + result);
-					System.out.println("	Successful Plugs: ");
-					System.out.println("		" + (char)enigma.getPlugEnd(1, 1) + " - " + (char)enigma.getPlugEnd(1, 2));
-					System.out.println("		" + (char)enigma.getPlugEnd(2, 1) + " - " + (char)enigma.getPlugEnd(2, 2));				
+					//Resets Rotors to original values before printing the Enigma Machine's state
+					enigma.setPosition(0, 8);
+					enigma.setPosition(1, 4);
+					enigma.setPosition(2, 21);
+					enigma.printState();			
 				}
 				
 			} 
@@ -63,21 +65,21 @@ public class Bombe {
 	
 	/**
 	 * Test Harness / Bombe for finding 3 unknown rotor positions from a known word in the decrypted message
-	 * @throws Exception : If invalid plug selections are made, or rotors are added to the wrong slots
+	 * @throws Exception: If invalid plug selections are made, or rotors are added to the wrong slots
 	 * SOLUTION: Detailed in readme
 	 */
 	static void challenge2() throws Exception {
 		EnigmaMachine enigma = new EnigmaMachine();
 		
-		enigma.addPlug('h', 'l');
-		enigma.addPlug('g', 'p');
+		enigma.addPlug('H', 'L');
+		enigma.addPlug('G', 'P');
 		enigma.addRotor(new BasicRotor("V", 0), 0);
 		enigma.addRotor(new BasicRotor("III", 0), 1);
 		enigma.addRotor(new BasicRotor("II", 0), 2);
 		enigma.addReflector(new Reflector("I"));
 		
-		String encodedMessage = "AVPBLOGHFRLTFELQEZQINUAXHTJMXDWERTTCHLZTGBFUPORNHZSLGZMJNEINTBSTBPPQFPMLSVKPETWFD".toLowerCase();
-		String knownWord = "ELECTRIC".toLowerCase();
+		String encodedMessage = "AVPBLOGHFRLTFELQEZQINUAXHTJMXDWERTTCHLZTGBFUPORNHZSLGZMJNEINTBSTBPPQFPMLSVKPETWFD";
+		String knownWord = "ELECTRIC";
 		
 		
 		int attemptNumber = 0;
@@ -100,12 +102,14 @@ public class Bombe {
 					result = trySolution(enigma, encodedMessage);
 					
 					if (result.contains(knownWord)) {
+
 						System.out.println("Attempt: " + attemptNumber);
 						System.out.println("	Output: " + result);
-						System.out.println("	Successful Rotor Positions: ");
-						System.out.println("		Rotor 0: " + enigma.getRotor(0).getPosition());
-						System.out.println("		Rotor 1: " + enigma.getRotor(1).getPosition());
-						System.out.println("		Rotor 2: " + enigma.getRotor(2).getPosition());
+						//Sets Rotors to working positions before printing the Enigma Machine's state
+						enigma.setPosition(0, i);
+						enigma.setPosition(1, j);
+						enigma.setPosition(2, k);
+						enigma.printState();
 					}
 				}
 			}
@@ -113,19 +117,24 @@ public class Bombe {
 		
 	}
 	
+	/**
+	 * Test Harness / Bombe for finding 3 unknown rotor types from a known word in the decrypted message
+	 * @throws Exception: If invalid plug selections are made, or rotors are added to the wrong slots
+	 * SOLUTION: Detailed in readme
+	 */
 	static void challenge3() throws Exception {
 		EnigmaMachine enigma = new EnigmaMachine();
 		
-		enigma.addPlug('m', 'f');
-		enigma.addPlug('o', 'i');
+		enigma.addPlug('M', 'F');
+		enigma.addPlug('O', 'I');
 		BasicRotor slot0;
 		BasicRotor slot1;
 		BasicRotor slot2;
 		String[] type = {"I", "II", "III", "IV", "V"};
 		enigma.addReflector(new Reflector("I"));
 		
-		String encodedMessage= "WMTIOMNXDKUCQCGLNOIBUYLHSFQSVIWYQCLRAAKZNJBOYWW".toLowerCase();
-		String knownWord = "JAVA".toLowerCase();
+		String encodedMessage= "WMTIOMNXDKUCQCGLNOIBUYLHSFQSVIWYQCLRAAKZNJBOYWW";
+		String knownWord = "JAVA";
 		
 		int attemptNumber = 0;
 		String result = "";
@@ -149,29 +158,38 @@ public class Bombe {
 
 						attemptNumber++;
 						result = trySolution(enigma, encodedMessage);
+						
+						if (result.contains(knownWord)) {
+							System.out.println("Attempt: " + attemptNumber);
+							System.out.println("	Output: " + result);
+							//Resets Rotors position to original values before printing Enigma Machine's state
+							enigma.setPosition(0, 22);
+							enigma.setPosition(1, 24);
+							enigma.setPosition(2, 23);
+							enigma.printState();
+						}
 					}
 					
-					if (result.contains(knownWord)) {
-						System.out.println("Attempt: " + attemptNumber);
-						System.out.println("	Output: " + result);
-						System.out.println("	Successful Rotor Slots: ");
-						System.out.println("		Rotor 0: " + enigma.getRotor(0).getType());
-						System.out.println("		Rotor 1: " + enigma.getRotor(1).getType());
-						System.out.println("		Rotor 2: " + enigma.getRotor(2).getType());
-					}
 				}
 			}
 		}
 	}	
 	
+	/**
+	 * Runs an enigma machine instance on a given encoded message. Returns the output after completion
+	 * @param enigma: Complete enigma machine with all plugs, rotors and reflectors.
+	 * @param encodedMessage: String containing the encoded message (to be decrypted)
+	 * @return: Message after encoded message passes through Enigma machine.s
+	 */
 	static String trySolution(EnigmaMachine enigma, String encodedMessage) {
 		String output = "";
 		
 		for (int i=0; i<encodedMessage.length(); i++) {
-			output += (char)(enigma.encodeLetter(encodedMessage.charAt(i)) + 'a');
+			output += (char)(enigma.encodeLetter(encodedMessage.charAt(i)) + 'A');
 		}
 		
 		return output;
 		
 	}
+
 }

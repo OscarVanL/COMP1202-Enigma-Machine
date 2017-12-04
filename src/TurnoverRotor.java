@@ -10,7 +10,7 @@ public class TurnoverRotor extends BasicRotor {
 	 * @param nextRotor: Object reference to next rotor in Enigma machine, later used for advancing position when at turnover position
 	 */
 	TurnoverRotor(String type, int position, BasicRotor nextRotor) {
-		super(type, position);
+		super(type, position); //Initialises the Rotor's type and position.
 		this.nextRotor = nextRotor;
 		setTurnoverPos(type);
 	}
@@ -20,8 +20,8 @@ public class TurnoverRotor extends BasicRotor {
 	 * @param type: Type of rotor, used in super constructor to assign mapping. Used in setTurnerPos to set the turnover position
 	 */
 	TurnoverRotor(String type, int position) {
-		super(type, position);
-		this.nextRotor = null;
+		super(type, position); //Initialises the Rotor's type and position.
+		this.nextRotor = null; //No nextRotor, likely because this Rotor is in slot 2.
 		setTurnoverPos(type);
 	}
 	
@@ -59,16 +59,19 @@ public class TurnoverRotor extends BasicRotor {
 	 */
 	@Override
 	public void rotate() {
-		System.out.println("TurnoverRotor's rotate method");
 		incrementPosition();
-		System.out.println("TurnoverRotor position incremented to " + getPosition());
+		//If the rotor is at the turnover position, and there is an applicable next rotor, rotate the next rotor too.
 		if ((getPosition() == turnoverPos) && (nextRotor != null)) {
 			nextRotor.rotate();
 		}
 		
+		//Then set the rotor position to zero.
 		if (getPosition() == ROTORSIZE) {
-			System.out.println("Turnover rotor at ROTORSIZE maximum, setting to 0");
-			setPosition(0);
+			try {
+				setPosition(0);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
