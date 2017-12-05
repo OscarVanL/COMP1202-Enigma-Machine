@@ -2,7 +2,7 @@ import java.util.ArrayList;
 
 public class Plugboard {
 	
-	ArrayList<Plug> plugList = new ArrayList<Plug>();
+	private ArrayList<Plug> plugList = new ArrayList<Plug>();
 	
 	/**
 	 * Takes two characters and creates a plug and adds it to the plugList ArrayList, IF the plugs don't clash with any existing plugs.
@@ -93,6 +93,10 @@ public class Plugboard {
 	 */
 	int getNumPlugs() {
 		return plugList.size();
+	}
+	
+	ArrayList<Plug> getPlugList() {
+		return plugList;
 	}
 	
 	/**

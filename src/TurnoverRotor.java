@@ -21,7 +21,7 @@ public class TurnoverRotor extends BasicRotor {
 	 */
 	TurnoverRotor(String type, int position) {
 		super(type, position); //Initialises the Rotor's type and position.
-		this.nextRotor = null; //No nextRotor, likely because this Rotor is in slot 2.
+		this.nextRotor = null; //No nextRotor, likely because this Rotor is in slot 2, or that a nextRotor will be set later.
 		setTurnoverPos(type);
 	}
 	
@@ -48,9 +48,17 @@ public class TurnoverRotor extends BasicRotor {
 				break;
 			default:
 				this.turnoverPos = 0;
-				System.out.println("Invalid rotor type chosen in BasicRotor constructor. (This error has not been handled");
+				System.err.println("Invalid rotor type chosen in BasicRotor constructor. (This error has not been handled");
 				// TODO add handling for invalid turnover rotor choice? (maybe an extension)
 		}
+	}
+	
+	/**
+	 * Sets nextRotor attribute
+	 * @param nextRotor: The next rotor (eg: If this TurnoverRotor is in slot 1, this is the rotor in slot 2)
+	 */
+	public void setNextRotor(BasicRotor nextRotor) {
+		this.nextRotor = nextRotor;
 	}
 	
 	/**

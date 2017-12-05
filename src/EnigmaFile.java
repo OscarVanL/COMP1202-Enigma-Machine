@@ -67,12 +67,28 @@ public class EnigmaFile {
 		try {
 			this.phrase = Files.readAllLines(readPath);
 		} catch (IOException e) {
-			System.out.println("Failed to read from file specified (Error not handled): " + readPath.toString());
-			System.out.println("Ensure that setReadPath has been used before this method with a valid Path");
+			System.err.println("Failed to read from file specified (Error not handled): " + readPath.toString());
+			System.err.println("Ensure that setReadPath has been used before this method with a valid Path");
 			e.printStackTrace();
 		}
-		
+		validateInput();
 		return this.phrase;
+	}
+	
+	/**
+	 * Implements the Input Conversion Extension task.
+	 */
+	void validateInput() {
+		int i=0;
+		String filteredString = "";
+		
+		for (String line : this.phrase) {
+			filteredString = line.replaceAll("\\s", ""); //Removes all spaces (\\s) by replacing them with empty string
+			filteredString = line.replaceAll("[^a-zA-Z]", ""); //Replaces all non a-z or A-Z values wiht empty string
+			filteredString.toUpperCase();
+			this.phrase.set(i, filteredString);
+			i++;
+		}
 	}
 	
 	/**
@@ -83,7 +99,7 @@ public class EnigmaFile {
 		try {
 			Files.write(writePath, output, StandardCharsets.UTF_8);
 		} catch (IOException e) {
-			System.out.println("Failed to write to file specified in writeOutput(), (Error not handled)");
+			System.err.println("Failed to write to file specified in writeOutput(), (Error not handled)");
 			e.printStackTrace();
 		}
 	}
@@ -98,7 +114,7 @@ public class EnigmaFile {
 		try {
 			Files.write(writePath, outputList, StandardCharsets.UTF_8);
 		} catch (IOException e) {
-			System.out.println("Failed to write to file specified in writeOutput(), (Error not handled)");
+			System.err.println("Failed to write to file specified in writeOutput(), (Error not handled)");
 			e.printStackTrace();
 		}
 	}

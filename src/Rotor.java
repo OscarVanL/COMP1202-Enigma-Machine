@@ -4,6 +4,7 @@ public abstract class Rotor {
 	
 	protected String name;
 	private int position;
+	private int originalPosition;
 	protected int[] mapping;
 	
 	/**
@@ -13,6 +14,7 @@ public abstract class Rotor {
 	Rotor(String type) {
 		this.name = type;
 		this.position = 0; //Reflector position is assigned to zero, as per answer in Coursework FAQ.
+		this.originalPosition = 0;
 	}
 	
 	/**
@@ -23,9 +25,12 @@ public abstract class Rotor {
 	Rotor(String type, int position) {
 		this.name = type;
 		this.position = position;
+		this.originalPosition = 0;
 	}
 	
 	public abstract void initialise(String type);
+	
+	public abstract void setMappingType(String type);
 	
 	/**
 	 * Abstract substitute method so that child classes (BasicRotor, TurnoverRotor & Reflector) must implement substitute
@@ -61,6 +66,14 @@ public abstract class Rotor {
 	 */
 	public void incrementPosition() {
 		this.position++;
+	}
+	
+	/**
+	 * Resets the Rotor's position to the value it was originally set to.
+	 * This is useful if you want to encrypt multiple messages with the same Enigma Machine configuration.
+	 */
+	public void resetPosition() {
+		this.position = this.originalPosition;
 	}
 	
 	/**

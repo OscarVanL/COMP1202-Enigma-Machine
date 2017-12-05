@@ -26,7 +26,7 @@ public class Reflector extends Rotor {
 			this.mapping = ReflectorII;
 		} else {
 			this.mapping = null;
-			System.out.println("Invalid rotor type chosen. (This error has not been handled)");
+			System.err.println("Invalid rotor type chosen. (This error has not been handled)");
 		}
 	}
 	
@@ -38,5 +38,15 @@ public class Reflector extends Rotor {
 	@Override
 	public int substitute(int letterIn) {
 		return mapping[letterIn];
+	}
+
+	/**
+	 * Method for changing the Reflector's mapping type (Do not use during execution)
+	 * @param type: Type of Reflector mapping to use (I/II)
+	 */
+	@Override
+	public void setMappingType(String type) {
+		initialise(type);
+		this.name = type;
 	}
 }

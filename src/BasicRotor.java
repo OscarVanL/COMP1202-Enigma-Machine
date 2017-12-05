@@ -124,8 +124,18 @@ public class BasicRotor extends Rotor {
 			this.mapping = V;
 			break;
 		default:
-			System.out.println("Invalid rotor type chosen in BasicRotor constructor. (This error has not been handled");
+			System.err.println("Invalid rotor type chosen in BasicRotor constructor. (This error has not been handled");
 			// TODO add handling for invalid rotor choice? (maybe an extension)
 	}
+	}
+
+	/**
+	 * Method for changing the Rotor's mapping type (Do not use during execution)
+	 * @param type: Type of Rotor mapping to use (I/II/III/IV/V)
+	 */
+	@Override
+	public void setMappingType(String type) {
+		initialise(type);
+		this.name = type;
 	}
 }

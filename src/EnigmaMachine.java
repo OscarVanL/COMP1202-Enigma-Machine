@@ -17,9 +17,10 @@ public class EnigmaMachine {
 	 * Adds a plug to the plugboard from two characters to be at either end of a plug
 	 * @param char1: Character to be at end 1
 	 * @param char2: Character to be at end 2
+	 * @return: True (If Plug added successfully), False (If plug was not added because there was a Clash)
 	 */
-	void addPlug (char char1, char char2) {
-		plugboard.addPlug(char1,  char2);
+	public boolean addPlug (char char1, char char2) {
+		return plugboard.addPlug(char1,  char2);
 	}
 	
 	/**
@@ -60,6 +61,21 @@ public class EnigmaMachine {
 	}
 	
 	/**
+	 * Prints all of the EnigaMachine's plugs
+	 */
+	void printPlugs() {
+		System.out.println("	Plugs: ");
+		for (int i=0; i<this.getNumPlugs(); i++) {
+			try {
+				System.out.println("		Plug " + i + ": " + (char)this.getPlugEnd(i, 1) + " - " + (char)this.getPlugEnd(i, 2));
+			} catch (Exception e) {
+				System.err.println("Failed to print ends of plug: " + i);
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	/**
 	 * Setter method for Rotor in EnigmaMachine
 	 * @param rotor: Rotor object (BasicRotor or TurnoverRotor)
 	 * @param slot: Slot to add Rotor object to in EnigmaMachine
@@ -84,13 +100,32 @@ public class EnigmaMachine {
 	 * @throws Exception: If the Rotor wasn't an instance of either, then it throws an exception.
 	 */
 	String getRotorInstanceType(int slot) throws Exception {
-		if (this.rotor[slot] instanceof BasicRotor) {
-			return "BasicRotor";
-		} else if (this.rotor[slot] instanceof TurnoverRotor) {
+		if (this.rotor[slot] instanceof TurnoverRotor) {
 			return "TurnoverRotor";
+		} else if (this.rotor[slot] instanceof BasicRotor) {
+			return "BasicRotor";
 		} else {
 			throw new Exception("Rotor Type was determined to not be instanceof BasicRotor OR TurnoverRotor, something is wrong!");
 		}
+	}
+	
+	/**
+	 * Prints all of the EnigmaMachine's Rotor states
+	 */
+	void printRotors() {
+		System.out.println("	Rotor Configurations: ");
+		try {
+			System.out.println("		Slot 0:");
+			System.out.println("			Instance Type: " + this.getRotorInstanceType(0) + " Type: " + this.getRotor(0).getType() + " Position: " + this.getRotor(0).getPosition());
+			System.out.println("		Slot 1:");
+			System.out.println("			Instance Type: " + this.getRotorInstanceType(1) + " Type: " + this.getRotor(1).getType() + " Position: " + this.getRotor(1).getPosition());
+			System.out.println("		Slot 2:");
+			System.out.println("			Instance Type: " + this.getRotorInstanceType(2) + " Type: " + this.getRotor(2).getType() + " Position: " + this.getRotor(2).getPosition());
+		} catch (Exception e) {
+			System.err.println("Failed to print states of Rotors");
+			e.printStackTrace();
+		}
+
 	}
 	
 	/**
@@ -107,6 +142,14 @@ public class EnigmaMachine {
 	 */
 	Reflector getReflector() {
 		return this.reflector;
+	}
+	
+	/**
+	 * Prints the reflector's type
+	 */
+	void printReflector() {
+		System.out.println("	Reflector Configuration: ");
+		System.out.println("		Reflector Type: " + this.getReflector().getType());
 	}
 	
 	/**
@@ -131,7 +174,7 @@ public class EnigmaMachine {
 			int letter = input;
 			
 			//If there exists a plug in plugboard for that letter, switch it
-			for (Plug plug : plugboard.plugList) {
+			for (Plug plug : plugboard.getPlugList()) {
 				if (plug.getEnd1() == input) {
 					letter = plug.getEnd2();
 				} else if (plug.getEnd2() == input) {
@@ -153,7 +196,7 @@ public class EnigmaMachine {
 			letter = rotor[0].substituteBack(letter);
 			
 			//Runs plugs on output from rotors if applicable.
-			for (Plug plug : plugboard.plugList) {
+			for (Plug plug : plugboard.getPlugList()) {
 				if ((plug.getEnd1()-'A') == letter) {
 					letter = plug.getEnd2() - 'A';
 				} else if ((plug.getEnd2()-'A') == letter) {
@@ -176,7 +219,7 @@ public class EnigmaMachine {
 		int letter = input;
 		
 		//If there exists a plug in plugboard for that letter, switch it
-		for (Plug plug : plugboard.plugList) {
+		for (Plug plug : plugboard.getPlugList()) {
 			if (plug.getEnd1() == input) {
 				letter = plug.getEnd2();
 				System.out.println("Plug exists, letter changed to: " + (char)(letter) + "(" + (letter-'A') + ")" );
@@ -214,7 +257,7 @@ public class EnigmaMachine {
 		System.out.println("	After rotor 0 substitute back: " + letter);
 		
 		//Runs plugs on output from rotors if applicable.
-		for (Plug plug : plugboard.plugList) {
+		for (Plug plug : plugboard.getPlugList()) {
 			if ((plug.getEnd1()-'A') == letter) {
 				letter = plug.getEnd2() - 'A';
 				System.out.println("Plug exists, letter changed to: " + (char)(letter) + "(" + letter + ")" );
@@ -270,21 +313,10 @@ public class EnigmaMachine {
 	public void printState() throws Exception {
 		System.out.println("	=== Enigma Configuration ===");
 		
-		System.out.println("	Plugs: ");
-		for (int i=0; i<this.getNumPlugs(); i++) {
-			System.out.println("		" + (char)this.getPlugEnd(i, 1) + " - " + (char)this.getPlugEnd(i, 2));
-		}
+		printPlugs();
+		printRotors();
+		printReflector();
 		
-		System.out.println("	Rotor Configurations: ");
-		System.out.println("		Slot 0:");
-		System.out.println("			Instance Type: " + this.getRotorInstanceType(0) + " Type: " + this.getRotor(0).getType() + " Position: " + this.getRotor(0).getPosition());
-		System.out.println("		Slot 1:");
-		System.out.println("			Instance Type: " + this.getRotorInstanceType(1) + " Type: " + this.getRotor(1).getType() + " Position: " + this.getRotor(1).getPosition());
-		System.out.println("		Slot 2:");
-		System.out.println("			Instance Type: " + this.getRotorInstanceType(2) + " Type: " + this.getRotor(2).getType() + " Position: " + this.getRotor(2).getPosition());
-		
-		System.out.println("	Reflector Configuration: ");
-		System.out.println("		Reflector Type: " + this.getReflector().getType());
 		System.out.println("	=== \n");
 	}
 }
