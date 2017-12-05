@@ -9,7 +9,7 @@ public class Bombe {
 	public static void main(String[] args) throws Exception {
 		//challenge1();
 		//challenge2();
-		challenge3();
+		//challenge3();
 	}
 	
 	/**
@@ -139,15 +139,20 @@ public class Bombe {
 		int attemptNumber = 0;
 		String result = "";
 		
+		//Iterates through all possibilities of mapping type for each rotor
 		for (int i=0; i<5; i++) {
+			//Change rotor 0's type
 			slot0 = new BasicRotor(type[i], 22);
 			
 			for (int j=0; j<5; j++) {
+				//Change rotor 1's type
 				slot1 = new BasicRotor(type[j], 24);				
 				
 				for (int k=0; k<5; k++) {
+					//Change rotor 2's type
 					slot2 = new BasicRotor(type[k], 23);
 					
+					//Checks if the rotors are in a valid configuration before continuing (no two or more rotors have the same type)
 					if (EnigmaMachine.isRotorConfigValid(slot0, slot1, slot2)) {
 						enigma.addRotor(slot0, 0);
 						enigma.addRotor(slot1, 1);
@@ -159,6 +164,7 @@ public class Bombe {
 						attemptNumber++;
 						result = trySolution(enigma, encodedMessage);
 						
+						//If the result contains the known word then our solution has been found
 						if (result.contains(knownWord)) {
 							System.out.println("Attempt: " + attemptNumber);
 							System.out.println("	Output: " + result);

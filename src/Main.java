@@ -16,23 +16,27 @@ public class Main {
 	 * Outputs BADGER
 	 */
 	static void test1() {
+		//Instantiates a new EnigmaMachine
 		EnigmaMachine enigma = new EnigmaMachine();
 		enigma.addPlug('A', 'M');
 		enigma.addPlug('G', 'L');
 		enigma.addPlug('E', 'T');
 		
+		//Adds rotors and reflector
 		enigma.addRotor(new BasicRotor("I", 6), 0);
 		enigma.addRotor(new BasicRotor("II", 12), 1);
 		enigma.addRotor(new BasicRotor("III", 5), 2);
 		enigma.addReflector(new Reflector("I"));
 		//enigma.toggleDebugMode();
 		
+		//Output string is initialised to be empty, so that it can be appended to during encoding
 		String output = "";
-		String encodedMessage = "GFWIQH";
+		String message = "GFWIQH";
 
-		for (int i=0; i<encodedMessage.length(); i++) {
-			System.out.println("Processing letter: " + (char)(encodedMessage.charAt(i)));
-			output += (char)(enigma.encodeLetter(encodedMessage.charAt(i)) + 'A');
+		//Each character in the encodedMessage is iterated through and encoded letters are appended to output 
+		for (int i=0; i<message.length(); i++) {
+			System.out.println("Processing letter: " + (char)(message.charAt(i)));
+			output += (char)(enigma.encodeLetter(message.charAt(i)) + 'A');
 		}
 		
 		System.out.println(output);
@@ -117,10 +121,12 @@ public class Main {
 		enigmaFile.setReadPath("partSixInput.txt");
 		enigmaFile.setWritePath("partSixOutput.txt");
 		
+		//Lines read from a text file are stored as a List, where each line in the text file is a separate element
 		List<String> encodedLines = enigmaFile.getLines();
 		ArrayList<String> decodedLines = new ArrayList<String>();
 		String output = "";
 		
+		//Two nested for-loops, one for each line (from encodedLines), one for each character on the line
 		for (String line : encodedLines) {
 			for (int i=0; i<line.length(); i++) {
 				System.out.println("Processing letter: " + (char)(line.charAt(i)));

@@ -94,14 +94,18 @@ public class CommandLineInterface extends EnigmaMachine {
 	 * This also checks for clashes when adding plugs.
 	 */
 	public void addPlug() {
+		//Each end is read in as a String as Scanner does not supporot .nextChar() or similar
 		System.out.println("What letter should the first end of the Plug be connected to?");
 		String end1Str = sc.nextLine().toUpperCase();
 		
 		System.out.println("What letter should the second end of the Plug be connected to?");
 		String end2Str = sc.nextLine().toUpperCase();
 		
+		//Then these strings are converted to chars.
 		char end1 = end1Str.charAt(0);
 		char end2 = end2Str.charAt(0);
+		
+		//If statement used as addPlug() returns true if successful, or false if not successful
 		if (addPlug(end1, end2)) {
 			System.out.println("Plug added successfully!");
 		} else {
@@ -117,15 +121,18 @@ public class CommandLineInterface extends EnigmaMachine {
 	public void modifyPlug() {
 		System.out.println("Enter the plug number to modify:");
 		int plugNum = validateInt(sc.nextLine());
+		
 		try {
 			System.out.println("That plug is: " + (char)this.getPlugEnd(plugNum, 1) + " - " + (char)this.getPlugEnd(plugNum, 2));
 		} catch (Exception e) {
 			System.err.println("Plug number not found. Plug was not modified.");
 			configPlugs();
 		}
+		
 		System.out.println("Which end would you like to modify:");
 		System.out.println("[1] End 1 (Left side)");
 		System.out.println("[2] End 2 (Right side)");
+		//Contained in try-catch statement as if an invalid plug number or plug end is used the program would otherwise crash.
 		try {
 			switch (validateInt(sc.nextLine())) {
 				case 1:
@@ -208,10 +215,12 @@ public class CommandLineInterface extends EnigmaMachine {
 			
 			if (rotorType == 1 || rotorType == 2) {
 				
+				//Gets the user's selections for Mapping Type and Initial Position
 				System.out.println("What mapping type should this Rotor use?");
 				type = inputRotorType();
 				position = inputRotorPosition();
 				
+				//Finally, instantiates and adds the relevant Rotor type.
 				switch (rotorType) {
 					case 1:
 						rotors.add(new BasicRotor(type, position));
@@ -277,6 +286,7 @@ public class CommandLineInterface extends EnigmaMachine {
 	public int inputRotorPosition() {
 		System.out.println("What position should this Rotor have? (0-25)");
 		int position = validateInt(sc.nextLine());
+		
 		if (position < 26 && position > 0) {
 			return position;
 		} else {
@@ -294,6 +304,8 @@ public class CommandLineInterface extends EnigmaMachine {
 		System.out.println("[1] Slot 1");
 		System.out.println("[2] Slot 2");	
 		int slot = validateInt(sc.nextLine());
+		
+		//Slots can only be between 0 and 2, this is validated
 		if (slot >= 0 && slot < 3) {
 			System.out.println("What Type would you like to change the Rotor to?");
 			getRotor(slot).setMappingType(inputRotorType());
@@ -313,9 +325,13 @@ public class CommandLineInterface extends EnigmaMachine {
 		System.out.println("[1] Slot 1");
 		System.out.println("[2] Slot 2");
 		int rotorSelection = validateInt(sc.nextLine());
+		
+		//Validates the slot choice (0-2)
 		if (rotorSelection < 3 && rotorSelection >= 0) {
 			System.out.println("What position would you like to set?");
 			int posSelection = validateInt(sc.nextLine());
+			
+			//Validates the position choice (0-25)
 			if (posSelection <= 25 && posSelection >= 0) {
 				try {
 					getRotor(rotorSelection).setPosition(posSelection);
@@ -327,10 +343,12 @@ public class CommandLineInterface extends EnigmaMachine {
 				System.err.println("Invalid Position, try again.");
 				changeRotorPosition();
 			}
+			
 		} else {
 			System.err.println("Invalid Rotor Slot, try again.");
 			changeRotorPosition();
 		}
+		//Returns to the Rotor configuration menu
 		configRotors();
 	}
 	
@@ -479,6 +497,7 @@ public class CommandLineInterface extends EnigmaMachine {
 		files.setReadPath(path);
 		List<String> lines = files.getLines();
 		
+		//Encodes each line from the input text file, and adds these to an ArrayList
 		for (String encode : lines) {
 			encoded.add(encodeString(encode));
 		}
@@ -501,6 +520,7 @@ public class CommandLineInterface extends EnigmaMachine {
 				fileEncode();
 				break;
 		}
+		//Resets rotor positions incase the same EnigmaMachine is to be used again on another String
 		resetRotorPositions();
 		configRun();
 	}
@@ -529,6 +549,7 @@ public class CommandLineInterface extends EnigmaMachine {
 				fileEncode();
 				break;
 		}
+		//Resets rotor positions incase the same EnigmaMachine is to be used again on another String
 		resetRotorPositions();
 		configRun();
 	}
@@ -550,6 +571,7 @@ public class CommandLineInterface extends EnigmaMachine {
 	String encodeString(String line) {
 		line.toUpperCase();
 		String output = "";
+		//Iterates through each character in the input string and encodes each.
 		for (int i=0; i<line.length(); i++) {
 			System.out.println("Processing letter: " + (char)(line.charAt(i)));
 			output += (char)(encodeLetter(line.charAt(i)) + 'A');
@@ -587,7 +609,7 @@ public class CommandLineInterface extends EnigmaMachine {
 	
 	/**
 	 * Takes in a user's input and attempts to parse it (and then return it) as an integer.
-	 * If this fails, the user is asked to repeat their input until a parsable integer is entered.
+	 * If this fails, the user is asked to repeat their input until a parsable integer is entered.6
 	 * @param number: String input to be parsed
 	 * @return: parsed integer output
 	 */

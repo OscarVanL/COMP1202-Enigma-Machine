@@ -65,6 +65,7 @@ public class EnigmaMachine {
 	 */
 	void printPlugs() {
 		System.out.println("	Plugs: ");
+		//Iterates for the number of plugs existing in the Plugboard, then prints the 1st and 2nd end for each iteration.
 		for (int i=0; i<this.getNumPlugs(); i++) {
 			try {
 				System.out.println("		Plug " + i + ": " + (char)this.getPlugEnd(i, 1) + " - " + (char)this.getPlugEnd(i, 2));
