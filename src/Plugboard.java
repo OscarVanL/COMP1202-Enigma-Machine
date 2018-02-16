@@ -10,7 +10,7 @@ public class Plugboard {
 	 * @param plug2: Letter of plug2 (char)
 	 * @return: true (if the plug was added successfully), false (if there was a clash, so the plug wasn't added)
 	 */
-	boolean addPlug(char plug1, char plug2) {
+	public boolean addPlug(char plug1, char plug2) {
 		//Boolean to store if there are any clashes in for-loop
 		Boolean clash = false;
 		//Intermediate plug with the arguments, may or may-not be added to the plugList.
@@ -36,7 +36,7 @@ public class Plugboard {
 	 * @param letter: Letter being decoded
 	 * @return Letter afterwards (as char), unchanged if there were no swaps, or changed if there were
 	 */
-	char substitute(char letter) {
+	public char substitute(char letter) {
 		//Iterates through the ArrayList and checks every plug to see if the letter is present on any plug
 		for(Plug plug : plugList) {
 			//Returns letter on the opposite end of the plug if the letter is present on one side.
@@ -56,7 +56,7 @@ public class Plugboard {
 	 * @return: char at the end of the plug
 	 * @throws Exception: If an invalid end value is used (must be 1 or 2)
 	 */
-	char getPlugEnd(int plugNumber, int end) throws Exception {
+	public char getPlugEnd(int plugNumber, int end) throws Exception {
 		switch(end) {
 			case(1):
 				return plugList.get(plugNumber).getEnd1();
@@ -74,7 +74,7 @@ public class Plugboard {
 	 * @param letter: char to set the plug's end to
 	 * @throws Exception: If an invalid end value is used (must be 1 or 2)
 	 */
-	void setPlug(int plugNumber, int end, char letter) throws Exception {
+	public void setPlug(int plugNumber, int end, char letter) throws Exception {
 		switch(end) {
 			case(1):
 				plugList.get(plugNumber).setEnd1(letter);
@@ -91,18 +91,18 @@ public class Plugboard {
 	 * Gets the number of Plugs in the Plugboard
 	 * @return: integer number of plugs in plugboard
 	 */
-	int getNumPlugs() {
+	public int getNumPlugs() {
 		return plugList.size();
 	}
 	
-	ArrayList<Plug> getPlugList() {
+	public ArrayList<Plug> getPlugList() {
 		return plugList;
 	}
 	
 	/**
 	 * Removes all plugs from the plugboard
 	 */
-	void clear() {
+	public void clear() {
 		plugList.clear();
 	}
 }

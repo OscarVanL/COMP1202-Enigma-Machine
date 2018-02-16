@@ -287,7 +287,7 @@ public class CommandLineInterface extends EnigmaMachine {
 		System.out.println("What position should this Rotor have? (0-25)");
 		int position = validateInt(sc.nextLine());
 		
-		if (position < 26 && position > 0) {
+		if (position < 26 && position >= 0) {
 			return position;
 		} else {
 			System.err.println("Invalid position choice. Try again.");
