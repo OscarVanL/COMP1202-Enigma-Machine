@@ -32,3 +32,4 @@ To use the Enigma Machine in your terminal, simply follow these steps:
         * Rotor 2 Type: III
         * Rotor 3 Type: II
     
+Mark: 88%
